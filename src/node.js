@@ -4,6 +4,10 @@ class Node {
         this.prev = prev;
         this.next = next;
     }
+
+    lenght() {
+    if (this.data === null) return 0;
+    }
 }
 
 module.exports = Node;
