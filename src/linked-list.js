@@ -23,7 +23,7 @@ class LinkedList {
 
     append(data) {
 
-        var node = new Node(data);
+        let node = new Node(data);
         
         if (this.length) {
             this._tail.next = node;
@@ -34,7 +34,6 @@ class LinkedList {
             this._tail = node;
         }
         this.length++;
-        console.log(node);
         return node;
         };
 
@@ -54,26 +53,58 @@ class LinkedList {
             currentNode = currentNode.next;
             i++;
         }
-    
         return currentNode.data;
+        
     }
 
-    insertAt(index) {
-            
-        
-        
+    insertAt(index, data) {
+        let i = 0;
+        let buffer;
+        let node = new Node(data);
+        let currentNode = this._head;
+        let prevNode;
+        if (index === 0) {
+            buffer = this._head; 
+            this._head = node;
+            this._head.next = buffer;
+            this._head.next.prev = node;
+        }
+        if (index === this.length) {
+            buffer = this._tail;
+            this._tail = node;
+            this._tail.prev = buffer;
+            this._tail.prev.next = node;
+        }
+        if (index > 0 && index < this.length) {
+            while (i < index) {
+                if (i === index-1) prevNode = currentNode;
+                currentNode = currentNode.next;
+                i++;
+            }
+            buffer = currentNode;
+            prevNode.next = node;
+            prevNode.next.next = buffer;
+            prevNode.next.prev = prevNode;
+            buffer.prev = node;
+        }
+        this.length++
     }
 
     isEmpty() {
-       return this.doublyLinkedList.length === 0 ? true : false
+       if (this.length === 0) return true;
+       return false;
     }
 
     clear() {
-        this.doublyLinkedList = [];
+        this._head.data = null;
+        this._tail.data = null;
+        this.length = 0;
     }
 
     deleteAt(index) {
-        if (index === 1) 
+        let i = 0;
+        let currentNode = this._head;
+        if (index === 0) {
         let currentNode = this._head;
             this._head = currentNode.next;
             if (this._head) {
@@ -81,15 +112,59 @@ class LinkedList {
             } else {
                 this._tail = null;
             }
+        }
+        if (index === this.length-1) {
+            this._tail = list._tail.prev;
+            this._tail.next = null;
+        }
+        if (index > 0 && index < this.length-1) {
+            while (i < index) {
+                currentNode = currentNode.next;
+                i++;
+            }
+            let nodeDel = currentNode;
+            let nodeBefore = currentNode.prev;
+            let nodeAfter = currentNode.next;
+            nodeBefore.next = nodeAfter;
+            nodeAfter.prev = nodeBefore;
+            nodeDel = null;           
+        }
+        this.length--
     }
 
     reverse() {
-        this.doublyLinkedList.reverse();
-    }
+       /* let arrayRevers = [];
+        let buffer = this.head;
+        for (let i = 0; i < this.length; i++) {
+            let buffer = this.at(i);
+            arrayRevers.push(buffer);
+        }
+        for (let i = this.length-1; i >= 0; i--) {
+            buffer.data = i; 
+            buffer = buffer.next*/
+          /* let currentNode = this._head;
+            let buffer = this._tail;
+            this._tail = this._head;
+            this._head = buffer;
+            let i = 0;
+            while (i < this.length-2) {
+                currentNode = currentNode.next;
+                i++;
+            }
+            console.log(currentNode);
+            buffer = currentNode.next;
+            currentNode.next = currentNode.prev;
+            currentNode.prev = buffer;*/
+  }
+
+    
+        
 
     indexOf(data) {
-        for (let i = 0; i < this.doublyLinkedList.length; i++) {
-            if (this.doublyLinkedList[i] === data) return i
+        let currentNode = this._head;
+        for (let i = 0; i < this.length; i++) {
+            if (currentNode.data === data) return i;
+            currentNode = currentNode.next;
         }
         return -1;
     }
@@ -100,20 +175,19 @@ class LinkedList {
 const list = new LinkedList();
 
 
-list.append(44);
-console.log(list);
-list.append(79);
-list.append(100);
-//list.append(79);
-//list.append(1229);
-//console.log(list.at(2));
-//list.insertAt(1);
-console.log(list);
-/*console.log(list.length);
-console.log(list);*/
-/*console.log(list.head());
-console.log(list.tail());
-console.log(list.at(1));
-console.log(list.insertAt(3));
-console.log(list);*/
+list.append(1);
+list.append(2);
+list.append(3);
+list.append(4);
+list.append(5);
+list.append(6);
 
+list.reverse();
+console.log(list);
+
+console.log(list.head());   console.log('   =6');
+console.log(list.tail());   console.log('   =1');
+console.log(list.at(1));    console.log('   =5');
+console.log(list.at(2));    console.log('   =4');
+console.log(list.at(3));    console.log('   =3');
+console.log(list.at(4));    console.log('   =2');
