@@ -1,17 +1,4 @@
-//const Node = require('./node');
-
-class Node {
-    constructor(data = null, prev = null, next = null) {
-        this.data = data;
-        this.prev = prev;
-        this.next = next;
-
-    }
-
-}
-
-
-
+const Node = require('./node');
 
 class LinkedList {
 
@@ -34,7 +21,7 @@ class LinkedList {
             this._tail = node;
         }
         this.length++;
-        return node;
+        return this;
         };
 
 
@@ -66,8 +53,10 @@ class LinkedList {
         if (index === 0) {
             buffer = this._head; 
             this._head = node;
-            this._head.next = buffer;
-            this._head.next.prev = node;
+            if(this.length>1){
+                this._head.next = buffer;
+                this._head.next.prev = node;
+            }            
         }
         if (index === this.length) {
             buffer = this._tail;
@@ -88,6 +77,7 @@ class LinkedList {
             buffer.prev = node;
         }
         this.length++
+        return this;
     }
 
     isEmpty() {
@@ -96,9 +86,12 @@ class LinkedList {
     }
 
     clear() {
-        this._head.data = null;
-        this._tail.data = null;
-        this.length = 0;
+        if(this.length>1) {
+            this._head.data = null;
+            this._tail.data = null;
+            this.length = 0;
+        }
+        return this;
     }
 
     deleteAt(index) {
@@ -112,9 +105,10 @@ class LinkedList {
             } else {
                 this._tail = null;
             }
+            return this;
         }
         if (index === this.length-1) {
-            this._tail = list._tail.prev;
+            this._tail = this._tail.prev;
             this._tail.next = null;
         }
         if (index > 0 && index < this.length-1) {
@@ -130,35 +124,26 @@ class LinkedList {
             nodeDel = null;           
         }
         this.length--
+        return this;
     }
 
     reverse() {
-       /* let arrayRevers = [];
-        let buffer = this.head;
-        for (let i = 0; i < this.length; i++) {
-            let buffer = this.at(i);
-            arrayRevers.push(buffer);
-        }
-        for (let i = this.length-1; i >= 0; i--) {
-            buffer.data = i; 
-            buffer = buffer.next*/
-          /* let currentNode = this._head;
-            let buffer = this._tail;
-            this._tail = this._head;
-            this._head = buffer;
-            let i = 0;
-            while (i < this.length-2) {
-                currentNode = currentNode.next;
-                i++;
-            }
-            console.log(currentNode);
-            buffer = currentNode.next;
-            currentNode.next = currentNode.prev;
-            currentNode.prev = buffer;*/
-  }
+        let buffer = this._tail;
+        this._tail = this._head;
+        this._head = buffer;
 
-    
-        
+        let currentObj=this._head;
+        let nextObj;
+        let prevObj;
+        for(let i = 0; i < this.length; i++) {
+            nextObj = currentObj.prev;
+            prevObj = currentObj.next;
+            currentObj.next = nextObj;
+            currentObj.prev = prevObj;
+            currentObj = currentObj.next;
+        }
+        return this;
+  } 
 
     indexOf(data) {
         let currentNode = this._head;
@@ -170,24 +155,4 @@ class LinkedList {
     }
 }
 
-//module.exports = LinkedList;
-
-const list = new LinkedList();
-
-
-list.append(1);
-list.append(2);
-list.append(3);
-list.append(4);
-list.append(5);
-list.append(6);
-
-list.reverse();
-console.log(list);
-
-console.log(list.head());   console.log('   =6');
-console.log(list.tail());   console.log('   =1');
-console.log(list.at(1));    console.log('   =5');
-console.log(list.at(2));    console.log('   =4');
-console.log(list.at(3));    console.log('   =3');
-console.log(list.at(4));    console.log('   =2');
+module.exports = LinkedList;
