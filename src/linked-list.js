@@ -59,13 +59,7 @@ class LinkedList {
     }
 
     insertAt(index) {
-            let currentNode = this._head;
-            this._head = currentNode.next;
-            if (this._head) {
-                this._head.prev = null;
-            } else {
-                this._tail = null;
-            }
+            
         
         
     }
@@ -79,7 +73,14 @@ class LinkedList {
     }
 
     deleteAt(index) {
-        this.doublyLinkedList.delete(index)
+        if (index === 1) 
+        let currentNode = this._head;
+            this._head = currentNode.next;
+            if (this._head) {
+                this._head.prev = null;
+            } else {
+                this._tail = null;
+            }
     }
 
     reverse() {
