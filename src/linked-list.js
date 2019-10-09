@@ -17,76 +17,55 @@ class LinkedList {
 
     constructor() {
         this.length = 0;
-        this.q = 0;
+        this._head = null;
+        this._tail = null;
     }
 
     append(data) {
 
-        let str = '';
-        if (this.length === 0) {
-            /*this.data = data;
-            this.next = null;
-            this.prev = null;*/
-            this.list = new Node(data, null, null);
-            this.q = data;
-            this.length = 1;
-            return;
+        var node = new Node(data);
+        
+        if (this.length) {
+            this._tail.next = node;
+            node.prev = this._tail;
+            this._tail = node;
+        } else {
+            this._head = node;
+            this._tail = node;
         }
-        for (let i = 0; i < this.length; i++) {
-            str += '.next'
-        }
-        let a = new Node(data, this.q, null); 
-        eval('this.list' + str + '=a');
-        this.q = data; 
-        this.length +=1;
-        str = ''; 
-        return;
+        this.length++;
+        console.log(node);
+        return node;
+        };
 
-    }
 
     head() {
-        return this.list.data;
+        return this._head.data;
     }
 
     tail() {
-        let str ='this.list.next';
-        let str1 ='this.list'
-        while (eval(str) != null) {
-            str += '.next';
-            str1 += '.next';
-        }
-        let a = eval(str1 + '.data');
-        str = '';
-        return a;
+        return this._tail.data;
     }
 
     at(index) {
-        let str ='this.list';
-        for (let i = 0; i < index; i++) {
-            str += '.next';
+        let currentNode = this._head;
+        let i = 0;
+        while (i < index) {
+            currentNode = currentNode.next;
+            i++;
         }
-        let a = eval(str + '.data');
-        str = '';
-        return a;
+    
+        return currentNode.data;
     }
 
     insertAt(index) {
-        let str ='this.list';
-        for (let i = 0; i < index-1; i++) {
-            str += '.next';
-        }
-        let str1 = 'this.list';
-        for (let i = 0; i < index; i++) {
-            str1 += '.next';
-        }
-        let a = eval(str);
-        let b = eval(str1);
-        eval('delete ' + str);
-        console.log (list);
-        console.log('---------');
-        
-        this.length -=1;
-        
+            let currentNode = this._head;
+            this._head = currentNode.next;
+            if (this._head) {
+                this._head.prev = null;
+            } else {
+                this._tail = null;
+            }
         
         
     }
@@ -119,21 +98,21 @@ class LinkedList {
 
 const list = new LinkedList();
 
-console.log(list);
+
 list.append(44);
-console.log(list.length);
-list.append(79);
-console.log(list.length);
-list.append(100);
-console.log(list.length);
-list.append(79);
-console.log(list.length);
-list.append(1229);
-console.log(list.length);
 console.log(list);
-console.log(list.head());
+list.append(79);
+list.append(100);
+//list.append(79);
+//list.append(1229);
+//console.log(list.at(2));
+//list.insertAt(1);
+console.log(list);
+/*console.log(list.length);
+console.log(list);*/
+/*console.log(list.head());
 console.log(list.tail());
 console.log(list.at(1));
 console.log(list.insertAt(3));
-console.log(list);
+console.log(list);*/
 
